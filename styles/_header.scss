@@ -1,0 +1,88 @@
+//! Imports
+@import "./module";
+@import "./mixin";
+
+// Header
+header {
+  height: 92px;
+  @extend .flex;
+  gap: 20px;
+  padding: 20px;
+  font-size: 20px;
+  .left {
+    @extend .flex;
+    gap: 10px;
+    .menu-bars {
+      padding: 5px;
+      i {
+        @extend .icon;
+      }
+    }
+    img,
+    span {
+      cursor: pointer;
+    }
+    .logo-text {
+      @include large {
+        display: none;
+      }
+    }
+  }
+  .middle {
+    width: 100%;
+    form {
+      @extend .flex;
+      background-color: $search-input;
+      padding: 6px 12px;
+      gap: 10px;
+      border-radius: 30px;
+      max-width: 560px;
+      @include large {
+        max-width: unset;
+      }
+      @include medium {
+        width: 75vw;
+      }
+      @include small {
+        width: 68vw;
+      }
+      .search {
+        @extend .flex;
+        gap: 10px;
+        input {
+          border: none;
+          outline: none;
+          width: 450px;
+          background: transparent;
+          font-size: 18px;
+        }
+        i {
+          @extend .icon;
+        }
+      }
+      .settings {
+        i {
+          @extend .icon;
+          @include medium {
+            display: none !important;
+          }
+        }
+      }
+    }
+  }
+  .right {
+    @extend .flex;
+    gap: 10px;
+    @include large {
+      display: none !important;
+    }
+    i {
+      @extend .icon;
+    }
+    img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+    }
+  }
+}
