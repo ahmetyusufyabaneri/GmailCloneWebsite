@@ -1,5 +1,6 @@
-import { renderMails, showModal } from "./ui.js";
+import { renderCategories, renderMails, showModal } from "./ui.js";
 import { getDate } from "./helpers.js";
+import { categories } from "./constants.js";
 
 const menuBars = document.querySelector(".menu-bars");
 const navigation = document.querySelector("nav");
@@ -10,6 +11,7 @@ const form = document.querySelector("#create-mail-form");
 const mailsArea = document.querySelector(".mails-area");
 const searchInput = document.querySelector("#search-input");
 const searchButton = document.querySelector("#search-icon");
+const categoryArea = document.querySelector(".navbar-middle");
 
 const getMailData = localStorage.getItem("data");
 
@@ -36,6 +38,25 @@ window.addEventListener("resize", (e) => {
     navigation.classList.remove("hide");
   }
 });
+
+const watchCategory = (e) => {
+  const leftNavbar = e.target.parentElement;
+
+  const selectedCategory = leftNavbar.dataset.name;
+
+  renderCategories(categoryArea, categories, selectedCategory);
+
+  if (selectedCategory === "Starred") {
+    const filtered = mailData.filter((i) => i.isStarry === true);
+
+    renderMails(mailsArea, filtered);
+    return;
+  }
+
+  renderMails(mailsArea, mailData);
+};
+
+categoryArea.addEventListener("click", watchCategory);
 
 const sendMail = (e) => {
   e.preventDefault();
@@ -121,8 +142,35 @@ const updateMail = (e) => {
 
     mail.remove();
   }
+
+  const starButton = e.target.classList.contains("bi-star");
+  const fillStarButton = e.target.classList.contains("bi-star-fill");
+
+  if (starButton || fillStarButton) {
+    const mail = e.target.closest(".mail");
+
+    const mailId = mail.dataset.id;
+
+    const foundedMail = mailData.find((mail) => mail.id == mailId);
+
+    const updatedMail = { ...foundedMail, isStarry: !foundedMail.isStarry };
+
+    const index = mailData.findIndex((i) => i.id == mailId);
+    mailData[index] = updatedMail;
+
+    localStorage.setItem("data", JSON.stringify(mailData));
+
+    renderMails(mailsArea, mailData);
+  }
 };
 
 form.addEventListener("submit", sendMail);
 
 mailsArea.addEventListener("click", updateMail);
+
+searchButton.addEventListener("click", () => {
+  const filteredArray = mailData.filter((i) => {
+    return i.message.toLowerCase().includes(searchInput.value.toLowerCase());
+  });
+  renderMails(mailsArea, filteredArray);
+});

@@ -151,6 +151,9 @@ nav .navbar-middle a {
 nav .navbar-middle a:hover {
   background-color: #eaebef;
 }
+nav .navbar-middle a span {
+  cursor: pointer;
+}
 nav .navbar-bottom div {
   display: flex;
   align-items: center;
@@ -416,4 +419,8 @@ section {
 .hide .navbar-middle span,
 .hide .navbar-bottom span {
   display: none;
+}
+
+.bi-star-fill {
+  color: #fcc737;
 }/*# sourceMappingURL=style.css.map */
